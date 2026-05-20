@@ -48,7 +48,7 @@ if "%BRANCH%"=="" (
 if "%BRANCH%"=="main" (
     echo.
     echo  ============================================================
-    echo   WARNING: You are on the MAIN branch (VULNERABLE version).
+    echo   WARNING: You are on the MAIN branch ^(VULNERABLE version^).
     echo   This version contains intentional security flaws.
     echo   For the secure version, run: git checkout fixed-version
     echo  ============================================================
@@ -58,7 +58,7 @@ if "%BRANCH%"=="main" (
 if "%BRANCH%"=="fixed-version" (
     echo.
     echo  ============================================================
-    echo   You are on the FIXED-VERSION branch (SECURE version).
+    echo   You are on the FIXED-VERSION branch ^(SECURE version^).
     echo   All critical/high vulnerabilities have been remediated.
     echo  ============================================================
     echo.
