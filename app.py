@@ -76,9 +76,9 @@ def login():
             # VULNERABILITY: Information Disclosure
             error = "Invalid username or password"
             database.log_action('LOGIN_FAILED', username, f"Failed login attempt with password: {password}")
-            return render_template('login_new.html', error=error)
+            return render_template('login.html', error=error)
     
-    return render_template('login_new.html')
+    return render_template('login.html')
 
 @app.route('/dashboard')
 def dashboard():
@@ -90,7 +90,7 @@ def dashboard():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     
-    return render_template('dashboard_new.html')
+    return render_template('dashboard.html')
 
 @app.route('/students')
 def students():
@@ -112,7 +112,7 @@ def students():
     students_list = cursor.fetchall()
     conn.close()
     
-    return render_template('students_new.html', students=students_list)
+    return render_template('students.html', students=students_list)
 
 @app.route('/student/<student_id>')
 def view_student(student_id):
@@ -134,7 +134,7 @@ def view_student(student_id):
     if not student:
         return "Student not found", 404
     
-    return render_template('student_view.html', student=student)
+    return render_template('student_detail.html', student=student)
 
 @app.route('/student/profile')
 def student_profile():
@@ -161,7 +161,7 @@ def student_profile():
     if not student:
         return "Your student record not found", 404
     
-    return render_template('student_profile_new.html', student=student)
+    return render_template('student_profile.html', student=student)
 
 @app.route('/student/grades')
 def student_grades():
@@ -187,7 +187,7 @@ def student_grades():
     if not student:
         return "Your student record not found", 404
     
-    return render_template('student_grades_new.html', student=student)
+    return render_template('student_grades.html', student=student)
 
 @app.route('/add_student', methods=['GET', 'POST'])
 def add_student():
@@ -223,7 +223,7 @@ def add_student():
             flask.flash('Error adding student', 'danger')
             return redirect(url_for('add_student'))
     
-    return render_template('add_student_new.html')
+    return render_template('add_student.html')
 
 @app.route('/search', methods=['GET', 'POST'])
 def search_students():
@@ -248,7 +248,7 @@ def search_students():
         # VULNERABILITY: Information Disclosure - Shows query
         print(f"[*] Search performed for: {search_term}")
     
-    return render_template('search_new.html', results=results)
+    return render_template('search.html', results=results)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -300,7 +300,7 @@ def upload_file():
         flask.flash(f'File "{filename}" uploaded successfully!', 'success')
         return redirect(url_for('dashboard'))
     
-    return render_template('upload_new.html')
+    return render_template('upload.html')
 
 @app.route('/download/<filename>')
 def download_file(filename):
@@ -372,7 +372,7 @@ def view_logs():
     logs = cursor.fetchall()
     conn.close()
     
-    return render_template('logs_new.html', logs=logs)
+    return render_template('logs.html', logs=logs)
 
 @app.route('/logout')
 def logout():

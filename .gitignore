@@ -1,39 +1,45 @@
-# Virtual Environment
-.venv-1/
+# ============================================
+# ISRM Project — .gitignore
+# ============================================
+
+# ---- Virtual Environment ----
 venv/
+.venv*/
 env/
 
-# Python cache and compiled files
+# ---- Python Cache ----
 __pycache__/
 *.py[cod]
 *$py.class
 *.pyc
 .pytest_cache/
 
-# Environment variables
+# ---- Environment Variables ----
 .env
 .env.*
 !.env.example
 
-# Flask session files
+# ---- Flask Session ----
 flask_session/
 
-# Database files
+# ---- Database (auto-generated at runtime) ----
 *.db
 *.sqlite
 *.sqlite3
 
-# Generated reports and artifacts
-reports/
-*.json
-reports/*.html
+# ---- Uploads (runtime directory) ----
 uploads/*
+!uploads/.gitkeep
 
-# Logs
+# ---- Sensitive / Credentials ----
+jenkins_pass.txt
+*.pem
+*.key
+
+# ---- Build Logs ----
 *.log
-logs/
 
-# IDE and OS files
+# ---- IDE & OS ----
 .vscode/
 .idea/
 *.swp
@@ -41,9 +47,12 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Jupyter Notebooks
+# ---- Jupyter ----
 .ipynb_checkpoints/
 *.ipynb
 
-# Jenkins
+# ---- Jenkins ----
 .jenkins.yml
+
+# ---- Temporary / One-off Scripts ----
+check_security_gate.py

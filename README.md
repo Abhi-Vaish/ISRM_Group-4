@@ -1,176 +1,243 @@
-# Information Security and Risk Management (ISRM): Vulnerability Demonstration & Remediation Platform
+<p align="center">
+  <h1 align="center">🔒 ISRM — Integrated Security Risk Management</h1>
+  <p align="center">
+    <strong>A DevSecOps Research Project on Secure Software Development Lifecycle</strong>
+  </p>
+  <p align="center">
+    <em>Student Management System · Vulnerability Assessment · CI/CD Security Pipeline</em>
+  </p>
+</p>
 
-## 1. Project Overview
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.9+-blue?logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/Flask-2.3-green?logo=flask&logoColor=white" alt="Flask">
+  <img src="https://img.shields.io/badge/SAST-Bandit-orange?logo=python&logoColor=white" alt="Bandit">
+  <img src="https://img.shields.io/badge/DAST-OWASP%20ZAP-red?logo=owasp&logoColor=white" alt="OWASP ZAP">
+  <img src="https://img.shields.io/badge/CI%2FCD-Jenkins-D24939?logo=jenkins&logoColor=white" alt="Jenkins">
+  <img src="https://img.shields.io/badge/License-MIT-yellow" alt="License">
+</p>
 
-The **ISRM Vulnerable Student Management System** is a research-grade, educational web application designed to demonstrate critical web security vulnerabilities and their industry-standard remediations. 
+---
 
-In the modern landscape of cybersecurity, theoretical knowledge is insufficient. This project solves the problem of abstract security education by providing a tangible, hands-on environment where developers and security researchers can actively exploit vulnerabilities—such as SQL Injection, Cross-Site Scripting (XSS), and Cross-Site Request Forgery (CSRF)—and subsequently analyze the patched, production-ready code. The high-level system idea is a dual-state architecture: a vulnerable baseline application and a fully secured iteration, allowing for direct comparative analysis of code patterns.
+> ⚠️ **You are on the `main` branch — this is the VULNERABLE version.**
+> This branch contains **14 intentional security vulnerabilities** for educational and research purposes.
+> Switch to the [`fixed-version`](../../tree/fixed-version) branch to see the secure implementation.
 
-## 2. Core Features
+---
 
-The system operates as a functional Student Management System while serving as a security sandbox.
+## 📖 About the Project
 
-*   **Vulnerability Sandbox (`main` branch):**
-    *   **Authentication Bypasses:** SQL Injection in login flows.
-    *   **Data Exfiltration:** Broken Access Control exposing sensitive student data (SSN, Passwords).
-    *   **Client-Side Attacks:** Stored and Reflected XSS in search and student records.
-    *   **Session Exploitation:** Missing CSRF tokens allowing unauthorized state changes.
-    *   **File System Access:** Unrestricted file uploads and Path Traversal vulnerabilities.
-*   **Production-Ready Security (`fixed-version` branch):**
-    *   **Robust Authentication:** Parameterized queries, rate-limiting against brute-force attacks.
-    *   **Strict Access Control:** Role-Based Access Control (RBAC) isolating Admin, User, and Student privileges.
-    *   **Input Sanitization:** Comprehensive validation and output encoding to neutralize XSS.
-    *   **Secure File Handling:** Extension whitelisting, secure filename generation, and directory constraints.
-    *   **Hardened Headers:** Implementation of CSP, X-Frame-Options, and X-Content-Type-Options.
+This project demonstrates a complete **Information Security & Risk Management (ISRM)** workflow applied to a Flask-based **Student Management System**. It covers the full lifecycle — from intentionally building a vulnerable application, through automated security scanning, to implementing and verifying security fixes.
 
-## 3. System Architecture
+### Key Highlights
 
-The application is built on a monolithic Model-View-Controller (MVC) architecture, heavily optimized for comparative security research.
+- **14 intentional vulnerabilities** aligned with OWASP Top 10 and CWE standards
+- **Automated SAST scanning** using Bandit (static code analysis)
+- **Automated DAST scanning** using OWASP ZAP (dynamic application testing)
+- **CI/CD Security Pipeline** via Jenkins with a CVSS-based security gate
+- **Before/After comparison** — vulnerable code vs. hardened code on separate branches
+- **STRIDE threat modeling** and **ALE risk quantification**
 
-*   **Frontend (View):** Built with HTML5, CSS3 (incorporating modern glassmorphism UI), and Jinja2 templating. The frontend dynamically renders data but relies on the backend for security enforcement.
-*   **Backend (Controller):** A Python Flask application (`app.py`) handling routing, session management, and business logic. It dictates the security posture (vulnerable vs. secure) based on the active branch.
-*   **Database (Model):** A serverless SQLite database (`vulnerable_app.db`) managed via `database.py`. It stores user credentials, student records, and system logs.
-*   **Testing Utilities:** Automated scripts (`test_vulnerabilities.py`, `generate_vulnerability_report.py`) that perform Dynamic Application Security Testing (DAST) against the running instance.
+---
 
-## 4. Security & Exploitation Pipeline
+## 🌿 Branch Strategy
 
-The following diagram illustrates the comparative data flow between an attacker attempting SQL Injection on the Vulnerable Branch versus the Secure Branch.
+| Branch | Purpose | Jenkins Result |
+|--------|---------|----------------|
+| **`main`** ← _you are here_ | Vulnerable version — contains 14 intentional security flaws | ❌ **BUILD FAILS** (Security Gate blocks deployment) |
+| **`fixed-version`** | Secure version — all critical/high vulnerabilities remediated | ✅ **BUILD PASSES** (Code is safe for deployment) |
 
-```mermaid
-graph TD
-    A["Attacker"] --> B{"SQL Injection Attempt"}
-    
-    subgraph Vulnerable Branch
-        B -->|"Raw Input"| C["app.py"]
-        C -->|"f-string concatenation"| D["database.py"]
-        D -->|"Altered AST"| E["SQLite Database"]
-        E -->|"Bypass Auth / Data Leak"| F["Compromised System"]
-    end
-    
-    subgraph Secure Branch
-        B -->|"Input with Malicious Payload"| G["app.py"]
-        G -->|"Parameterized Tuple"| H["database.py"]
-        H -->|"Pre-compiled Statement"| I["SQLite Database"]
-        I -->|"Execution Fails / Input Sanitized"| J["System Secured"]
-    end
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.9+
+- pip (Python package manager)
+- Git
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/gauravjaiswal12/ISRM_Group-4.git
+cd ISRM_Group-4
+
+# Create a virtual environment
+python -m venv venv
+
+# Activate the virtual environment
+# Windows:
+venv\Scripts\activate
+# Linux/macOS:
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
 ```
 
-## 5. Technology Stack
+### Running the Application
 
-*   **Python 3.x:** Core programming language.
-*   **Flask:** Lightweight WSGI web application framework chosen for its transparency, making security vulnerabilities (and their fixes) easy to trace without abstraction magic.
-*   **SQLite3:** File-based relational database. Chosen because it requires no external infrastructure, making the application highly portable for security testing.
-*   **Werkzeug:** Comprehensive WSGI web application library (used for secure filename processing and password hashing).
-*   **Jinja2:** Templating engine used for rendering dynamic HTML and demonstrating context-aware XSS vulnerabilities.
-
-## 6. Branch Comparison
-
-Understanding the branch structure is critical to the educational value of this repository.
-
-| Feature | `main` Branch (Vulnerable) | `fixed-version` Branch (Secure) |
-| :--- | :--- | :--- |
-| **Purpose** | Demonstrates anti-patterns and vulnerabilities. | Demonstrates industry-standard security practices. |
-| **Database Queries** | Raw string formatting (`f"SELECT..."`). | Parameterized tuples (`execute(query, (var,))`). |
-| **Access Control** | UI-hidden links; no backend enforcement. | Strict server-side RBAC validation per endpoint. |
-| **Session State** | Persistent, predictable, no CSRF validation. | Secure tokens, timeout enforcement, session regeneration. |
-| **Error Handling** | Verbose; leaks stack traces and DB structures. | Generic user-facing errors; detailed internal logging. |
-
-*Both branches exist simultaneously so developers can view the exact `diff` required to secure a vulnerable codebase.*
-
-## 7. Setup Instructions
-
-To run the project locally for security testing:
-
-1.  **Clone the repository:**
-    ```bash
-    git clone <repository-url>
-    cd ISRM_Proj
-    ```
-2.  **Select your target environment:**
-    *   To test vulnerabilities: `git checkout main`
-    *   To test secure implementations: `git checkout fixed-version`
-3.  **Create a virtual environment:**
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
-    ```
-4.  **Install dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
-5.  **Run the application:**
-    ```bash
-    python app.py
-    ```
-    *The application will be accessible at `http://127.0.0.1:5000`.*
-
-## 8. Core Logic Explanation
-
-### Explaining the Vulnerability Architecture
-Instead of relying on third-party security flaws, the system's "vulnerable logic" is intentionally woven into the application layer:
-*   **SQL Injection Mechanism:** In the `main` branch, the database connection accepts raw string inputs directly from the HTML forms. When an attacker inputs SQL operators, the Python interpreter blindly concatenates them, altering the logical structure of the query before it hits the SQLite engine.
-*   **XSS & CSRF Systems:** The templating engine in the `main` branch renders user input with `|safe` tags, telling the browser to execute any injected JavaScript. Furthermore, state-changing requests (like adding a student) require no unique tokens, allowing attackers to forge requests using pre-authenticated session cookies.
-
-### Explaining the Security System
-*   **The Defense-in-Depth Approach:** The `fixed-version` branch implements a multi-layered defense. Rate-limiting logic tracks authentication attempts in memory via timestamp arrays, locking out brute-force attacks mathematically.
-*   **Data Neutralization:** Database queries are decoupled from data payloads. The SQLite engine pre-compiles the SQL statement structure, and user inputs are strictly treated as literal string values, mathematically guaranteeing that injected SQL operators cannot alter the query's AST (Abstract Syntax Tree).
-
-## 9. CI/CD Security Pipeline
-
-The repository integrates a robust continuous security testing pipeline via Jenkins. This ensures that any code pushed to the repository is automatically scanned for vulnerabilities before being marked as a successful build.
-
-```mermaid
-graph TD
-    A["Developer Local Testing"] --> B["Git Push to GitHub"]
-    B --> C{"Jenkins CI/CD Triggered"}
-    
-    C --> D["Run Bandit Security Scan"]
-    C --> E["Run Automated DAST Scripts"]
-    
-    D --> F["Aggregate Findings"]
-    E --> F
-    
-    F --> G["Generate CSV Report"]
-    G --> H{"Calculate Risk Metrics"}
-    
-    H -->|"Residual Risk & Control Effectiveness"| I{"Build Evaluation"}
-    
-    I -->|"Vulnerabilities Detected"| J["Build FAILED"]
-    I -->|"No Vulnerabilities"| K["Build SUCCESSFUL"]
-    
-    J --> L["Prevent Deployment"]
-    K --> M["Validate & Deploy"]
+```bash
+python app.py
 ```
 
-### Pipeline Workflow Details:
-1. **Testing**: Developers perform local testing of security implementations and patches.
-2. **Git Push**: Commits are pushed to the remote GitHub repository.
-3. **Jenkins Build Runs**: The push event automatically triggers the Jenkins CI/CD pipeline, initiating code security checks including **Bandit scanning** for Python vulnerabilities.
-4. **Report Generation**: The pipeline aggregates the results from Bandit and other automated security testing scripts, compiling the findings into a detailed **CSV report format**.
-5. **Risk Assessment**: Using the data aggregated in the CSV report, the system automatically calculates the **Residual Risk** and evaluates **Control Effectiveness** to provide actionable security metrics.
-6. **Build Evaluation**: 
-   - If the CSV report flags **Vulnerabilities** (e.g., on the `main` branch), the pipeline halts and marks the build as **FAILED**, preventing insecure code deployment.
-   - If the CSV report indicates **No Vulnerabilities** (e.g., on the `fixed-version` branch), the pipeline validates the changes and marks the build as **SUCCESSFUL**.
+The application runs at **http://127.0.0.1:5000** (or `http://0.0.0.0:5000` on this vulnerable branch).
 
+### Test Credentials
 
-## 10. Folder Structure
+| Role | Username | Password |
+|------|----------|----------|
+| Admin | `admin` | `admin123` |
+| User | `user` | `password` |
+| Student | `john_student` | `student123` |
 
-```text
-ISRM_Proj/
-├── app.py                         # Main application entry point & routing
-├── database.py                    # Database initialization & interaction logic
-├── config.py                      # Application configuration and environment variables
-├── requirements.txt               # Python dependencies
-├── test_vulnerabilities.py        # Automated DAST vulnerability testing script
-├── generate_vulnerability_report.py # Generates JSON/HTML security reports
-├── vulnerable_app.db              # SQLite database (generated on runtime)
-├── static/                        # CSS, JS, and image assets
-│   ├── css/
-│   │   └── style.css              # Custom glassmorphism styling
-├── templates/                     # Jinja2 HTML templates
-│   ├── login_new.html             # Authentication interface
-│   ├── dashboard_new.html         # Main application hub
-│   └── ...                        # Other view templates
-├── uploads/                       # Target directory for file upload vulnerabilities
-└── ... (Markdown Documentation)   # SECURITY_FIXES, VULNERABILITIES, etc.
+---
+
+## 🔴 Vulnerabilities in This Branch
+
+This branch contains **14 intentional security vulnerabilities**:
+
+| # | Vulnerability | CWE | CVSS | Severity |
+|---|---|---|---|---|
+| 1 | SQL Injection (4 locations) | CWE-89 | 9.0 | **Critical** |
+| 2 | Brute Force / Credential Stuffing | CWE-307 | 7.5 | High |
+| 3 | Weak Authentication / Hardcoded Credentials | CWE-798 | 8.2 | High |
+| 4 | Insecure Password Storage | CWE-256 | 8.0 | High |
+| 5 | Sensitive Data Exposure | CWE-200 | 8.1 | High |
+| 6 | Insecure File Upload | CWE-434 | 8.5 | High |
+| 7 | Path Traversal | CWE-22 | 7.5 | High |
+| 8 | Session Hijacking | CWE-384 | 8.0 | High |
+| 9 | Cross-Site Request Forgery (CSRF) | CWE-352 | 7.0 | High |
+| 10 | Information Disclosure | CWE-209 | 6.5 | Medium |
+| 11 | Missing Access Control | CWE-284 | 7.2 | High |
+| 12 | Privilege Escalation | CWE-269 | 8.8 | High |
+| 13 | Command Injection (Potential) | CWE-78 | 9.0 | Critical |
+| 14 | Insecure Deserialization | CWE-502 | 6.0 | Medium |
+
+> 📄 See [docs/VULNERABILITIES.md](docs/VULNERABILITIES.md) for detailed descriptions, attack examples, and STRIDE mappings.
+
+### SQL Injection Demo
+
 ```
+Username: ' OR '1'='1
+Password: ' OR '1'='1
+→ Bypasses authentication!
+```
+
+---
+
+## 🔍 Vulnerability Comparison (main vs. fixed-version)
+
+| Metric | Vulnerable (`main`) | Fixed (`fixed-version`) | Improvement |
+|--------|---------------------|------------------------|-------------|
+| **Jenkins Build** | ❌ FAILURE | ✅ SUCCESS | Security gate works |
+| **Bandit HIGH/CRITICAL** | 6 issues | 0 issues | **100% reduction** |
+| **ZAP High Alerts** | 1 | 0 | **SQL Injection fixed** |
+| **SQL Injection** | ✅ Exploitable | ❌ Blocked | Parameterized queries |
+| **Debug Mode** | ON (info leak) | OFF (secure) | Config hardened |
+| **CSRF Protection** | None | Token-based | CSRF tokens added |
+| **Path Traversal** | ✅ Exploitable | ❌ Blocked | Input validation |
+| **File Upload** | Allows `.exe` | Safe types only | Extension whitelist |
+
+---
+
+## 📁 Project Structure
+
+```
+ISRM_Group-4/  (main branch)
+├── README.md                    # This file
+├── requirements.txt             # Python dependencies
+├── .gitignore                   # Git ignore rules
+├── Jenkinsfile                  # CI/CD pipeline definition
+├── LICENSE                      # MIT License
+├── csrf_attack.html             # CSRF attack demonstration
+│
+├── app.py                       # Main Flask app (VULNERABLE)
+├── config.py                    # Configuration (VULNERABLE)
+├── database.py                  # Database operations (VULNERABLE)
+├── generate_vulnerability_report.py  # CSV report generator
+├── test_vulnerabilities.py      # Automated vulnerability test suite
+│
+├── templates/                   # Jinja2 HTML templates
+│   ├── base.html, login.html, dashboard.html, ...
+│
+├── static/                      # Static assets
+│   └── style.css
+│
+├── reports/                     # Security scan reports
+│   ├── bandit_report.html       # Bandit SAST findings
+│   ├── zap_report.html          # OWASP ZAP findings
+│   └── ...
+│
+├── docs/                        # Documentation
+│   ├── VULNERABILITIES.md       # Detailed vulnerability catalog
+│   └── DEMO_GUIDE.md            # Demo walkthrough
+│
+└── uploads/                     # File upload directory (runtime)
+```
+
+---
+
+## 🛡️ Security Scanning
+
+### SAST — Bandit
+
+```bash
+pip install bandit
+bandit -r . -x ./venv -f screen
+```
+
+**Expected output:** 7 issues (4 Critical, 2 High, 1 Medium)
+
+### DAST — OWASP ZAP
+
+Scan report: [`reports/zap_report.html`](reports/zap_report.html)
+
+---
+
+## 🛠️ Technology Stack
+
+| Category | Tool | Purpose |
+|----------|------|---------|
+| **Backend** | Flask 2.3 | Web application framework |
+| **Database** | SQLite | Lightweight relational database |
+| **SAST** | Bandit | Python static security analysis |
+| **DAST** | OWASP ZAP | Dynamic web application security testing |
+| **CI/CD** | Jenkins | Automated build and security pipeline |
+
+---
+
+## 👥 Team — Group 4
+
+<!-- Add team members here -->
+| Name | Role |
+|------|------|
+| *Team Member 1* | *Role* |
+| *Team Member 2* | *Role* |
+| *Team Member 3* | *Role* |
+| *Team Member 4* | *Role* |
+
+---
+
+## ⚠️ Disclaimer
+
+> This application is provided **solely for authorized security testing and educational purposes**. It contains **serious security flaws** — do **NOT** deploy it to production or expose it to untrusted networks. Unauthorized access to computer systems is illegal.
+
+---
+
+## 📖 References
+
+- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
+- [Common Weakness Enumeration (CWE)](https://cwe.mitre.org/)
+- [STRIDE Threat Modeling](https://en.wikipedia.org/wiki/STRIDE_(security))
+- [CVSS v3.1 Calculator](https://www.first.org/cvss/calculator/3.1)
+- [Bandit Documentation](https://bandit.readthedocs.io/)
+- [OWASP ZAP](https://www.zaproxy.org/)
+
+---
+
+## 📝 License
+
+This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
