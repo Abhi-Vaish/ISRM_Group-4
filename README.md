@@ -140,7 +140,43 @@ git clone https://github.com/gauravjaiswal12/ISRM_Group-4.git
 cd ISRM_Group-4
 ```
 
-### Step 2 — Create and Activate Virtual Environment
+### ⚡ One-Click Run (Recommended)
+
+Instead of manual setup, just run the launcher script — it automatically creates the virtual environment, installs all dependencies (Flask, Bandit, etc.), and starts the application:
+
+**Windows:**
+```cmd
+run.bat
+```
+> 💡 You can also double-click `run.bat` in File Explorer.
+
+**Linux / macOS:**
+```bash
+chmod +x run.sh
+./run.sh
+```
+
+**With Bandit SAST scan before launch:**
+```bash
+# Windows:
+run.bat --scan
+
+# Linux / macOS:
+./run.sh --scan
+```
+
+The script will:
+1. ✅ Check that Python is installed
+2. ✅ Detect the current branch (main or fixed-version)
+3. ✅ Create a virtual environment (if not already created)
+4. ✅ Install all Python dependencies + Bandit
+5. ✅ Start the Flask application on http://127.0.0.1:5000
+
+> If you prefer manual setup, follow the steps below.
+
+---
+
+### Step 2 (Manual) — Create and Activate Virtual Environment
 
 ```bash
 # Create virtual environment
@@ -609,17 +645,7 @@ ISRM_Group-4/
 
 ---
 
-## 👥 Team — Group 4
 
-<!-- Add team members here -->
-| Name | Role |
-|------|------|
-| *Team Member 1* | *Role* |
-| *Team Member 2* | *Role* |
-| *Team Member 3* | *Role* |
-| *Team Member 4* | *Role* |
-
----
 
 ## ⚠️ Disclaimer
 
@@ -638,8 +664,6 @@ ISRM_Group-4/
 - [Jenkins Documentation](https://www.jenkins.io/doc/)
 - [Flask Documentation](https://flask.palletsprojects.com/)
 
----
 
-## 📝 License
 
-This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
+
