@@ -174,6 +174,22 @@ Once the app is running (`http://127.0.0.1:5000`), you can use these tools:
 
 > 💡 **Quickest demo flow:** `run.bat --scan` → shows Bandit results → app starts → open ZAP → scan `http://127.0.0.1:5000`
 
+#### 🔄 Switching Between Vulnerable & Fixed Versions
+
+Stop the running app (Ctrl+C), then:
+
+```bash
+# Switch to FIXED (secure) version:
+git checkout fixed-version
+run.bat
+
+# Switch to MAIN (vulnerable) version:
+git checkout main
+run.bat
+```
+
+That's it — just **2 commands** to switch! The script handles everything else.
+
 > If you prefer manual setup, follow the steps below.
 
 ---
