@@ -1,4 +1,4 @@
-# ISRM Project — Teacher Demo Guide 🎓
+# ISRM Project — Demo Guide 🎓
 
 > Follow these steps **in order**. Each step includes the command and what to say.
 
@@ -10,10 +10,9 @@
 
 ### Step 1 — Start the Vulnerable App
 
-```powershell
-cd c:\Users\gaura\Downloads\ISRM
+```bash
 git checkout main
-.\venv\Scripts\python.exe app.py
+python app.py
 ```
 
 > **App runs at:** http://127.0.0.1:5000
@@ -54,11 +53,10 @@ Logout → On the Login page enter:
 
 ### Step 4 — Run Bandit SAST Scan
 
-**Open new PowerShell** (keep app running):
+**Open new terminal** (keep app running):
 
-```powershell
-cd c:\Users\gaura\Downloads\ISRM
-.\venv\Scripts\bandit.exe -r . -x ./venv -f screen
+```bash
+bandit -r . -x ./venv -f screen
 ```
 
 **Result:** 7 issues found (4 Critical, 2 High, 1 Medium)
@@ -83,7 +81,7 @@ Click **ISRM_Security_Pipeline** → click build number → see stages
 
 ### Step 6 — Show OWASP ZAP Report (Vulnerable)
 
-Open: `c:\Users\gaura\Downloads\ISRM\reports\zap_report.html`
+Open: `reports/zap_report.html`
 
 **ZAP found:**
 | Risk | Count |
@@ -106,11 +104,10 @@ Open: `c:\Users\gaura\Downloads\ISRM\reports\zap_report.html`
 
 Stop the app (Ctrl+C), then:
 
-```powershell
-git stash
+```bash
 git checkout fixed-version
-.\venv\Scripts\pip.exe install -r requirements.txt
-.\venv\Scripts\python.exe app.py
+pip install -r requirements.txt
+python app.py
 ```
 
 > Notice: **Debug mode: OFF** now (one of the fixes!)
@@ -150,7 +147,7 @@ Click **ISRM_Fixed_Pipeline** → click build #1 → see stages
 
 ### Step 10 — Show OWASP ZAP Report (Fixed)
 
-Open: `c:\Users\gaura\Downloads\ISRM\reports\zap_report_fixed.html`
+Open: `reports/zap_report_fixed.html`
 
 **ZAP found:**
 | Risk | Count |
@@ -167,18 +164,15 @@ Open: `c:\Users\gaura\Downloads\ISRM\reports\zap_report_fixed.html`
 
 ### Step 11 — Switch Back to Main (for further demo if needed)
 
-```powershell
+```bash
 # Stop the app (Ctrl+C)
 git checkout main
-git stash pop
-.\venv\Scripts\python.exe app.py
+python app.py
 ```
 
 ---
 
-## THE KEY COMPARISON TABLE
-
-Show this to your teacher — this is the research finding:
+## KEY COMPARISON TABLE
 
 | Metric | Vulnerable (`main`) | Fixed (`fixed-version`) | Improvement |
 |--------|-------------------|----------------------|-------------|
@@ -196,31 +190,27 @@ Show this to your teacher — this is the research finding:
 ## Quick Reference — All Commands
 
 ### Vulnerable Version
-```powershell
-cd c:\Users\gaura\Downloads\ISRM
+```bash
 git checkout main
-.\venv\Scripts\python.exe app.py                              # Start app
-.\venv\Scripts\bandit.exe -r . -x ./venv -f screen            # Run Bandit
-.\venv\Scripts\python.exe generate_vulnerability_report.py     # Generate CSV
+python app.py                              # Start app
+bandit -r . -x ./venv -f screen            # Run Bandit
+python generate_vulnerability_report.py     # Generate CSV
 # Jenkins: http://localhost:8080 → ISRM_Security_Pipeline
-# ZAP report: reports\zap_report.html
+# ZAP report: reports/zap_report.html
 ```
 
 ### Fixed Version
-```powershell
-cd c:\Users\gaura\Downloads\ISRM
-git stash
+```bash
 git checkout fixed-version
-.\venv\Scripts\python.exe app.py                              # Start app
-.\venv\Scripts\bandit.exe -r . -x ./venv -f screen            # Run Bandit
+python app.py                              # Start app
+bandit -r . -x ./venv -f screen            # Run Bandit
 # Jenkins: http://localhost:8080 → ISRM_Fixed_Pipeline
-# ZAP report: reports\zap_report_fixed.html
+# ZAP report: reports/zap_report_fixed.html
 ```
 
 ### Switch Back
-```powershell
+```bash
 git checkout main
-git stash pop
 ```
 
 ---
