@@ -144,26 +144,13 @@ cd ISRM_Group-4
 
 Instead of manual setup, just run the launcher script — it automatically creates the virtual environment, installs all dependencies (Flask, Bandit, etc.), and starts the application:
 
-**Windows:**
-```cmd
-run.bat
-```
-> 💡 You can also double-click `run.bat` in File Explorer.
+| Command | What It Does |
+|---------|-------------|
+| `run.bat` | Setup + start the Flask app |
+| `run.bat --scan` | Setup + run Bandit SAST scan + start the app |
+| Double-click `run.bat` | Same as above (works from File Explorer) |
 
-**Linux / macOS:**
-```bash
-chmod +x run.sh
-./run.sh
-```
-
-**With Bandit SAST scan before launch:**
-```bash
-# Windows:
-run.bat --scan
-
-# Linux / macOS:
-./run.sh --scan
-```
+**Linux / macOS:** Use `./run.sh` and `./run.sh --scan` instead (run `chmod +x run.sh` first).
 
 The script will:
 1. ✅ Check that Python is installed
@@ -171,6 +158,21 @@ The script will:
 3. ✅ Create a virtual environment (if not already created)
 4. ✅ Install all Python dependencies + Bandit
 5. ✅ Start the Flask application on http://127.0.0.1:5000
+
+#### 🔍 Quick Reference — All Tools
+
+Once the app is running (`http://127.0.0.1:5000`), you can use these tools:
+
+| Tool | How to Run | Notes |
+|------|-----------|-------|
+| **Flask App** | `run.bat` | Auto-setup + launch on port 5000 |
+| **Bandit (SAST)** | `run.bat --scan` | Scans source code for vulnerabilities before starting app |
+| **OWASP ZAP (DAST)** | Open ZAP → Automated Scan → Target: `http://127.0.0.1:5000` → Attack | App must be running first. Download ZAP from [zaproxy.org](https://www.zaproxy.org/download/) |
+| **Jenkins (CI/CD)** | `java -jar jenkins.war --httpPort=8080` | Open http://localhost:8080 → Create Pipeline → Point to this repo's `Jenkinsfile` |
+| **Vulnerability Tests** | `python test_vulnerabilities.py` | App must be running. Tests SQL injection, path traversal, etc. |
+| **CSV Report** | `python generate_vulnerability_report.py` | Generates `reports/vulnerability_assessment.csv` with CVSS scores |
+
+> 💡 **Quickest demo flow:** `run.bat --scan` → shows Bandit results → app starts → open ZAP → scan `http://127.0.0.1:5000`
 
 > If you prefer manual setup, follow the steps below.
 
