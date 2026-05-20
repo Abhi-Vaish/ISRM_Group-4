@@ -1,0 +1,89 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job">
+  <description>ISRM Security Pipeline - Fixed Version (Secured Code)</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps">
+    <script>
+pipeline {
+    agent any
+    
+    environment {
+        PYTHON_PATH = "C:\\Users\\gaura\\anaconda3\\python.exe"
+        REPORT_DIR = 'reports'
+    }
+    
+    stages {
+        
+        stage('0. Checkout') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/fixed-version']], userRemoteConfigs: [[url: 'https://github.com/Snehalgupta-07/ISRM_Proj.git']]])
+                bat 'dir'
+            }
+        }
+        
+        stage('1. Build') {
+            steps {
+                bat """
+                    ${PYTHON_PATH} --version
+                    ${PYTHON_PATH} -m pip install --upgrade pip
+                    ${PYTHON_PATH} -m pip install -r requirements.txt
+                    ${PYTHON_PATH} -m pip install bandit
+                """
+            }
+        }
+        
+        stage('2. Security Scan') {
+            steps {
+                bat """
+                    if not exist reports mkdir reports
+                    ${PYTHON_PATH} -m bandit -r . -x ./venv,./.git -f json -o reports\\bandit_report.json || exit 0
+                    ${PYTHON_PATH} -m bandit -r . -x ./venv,./.git -f html -o reports\\bandit_report.html || exit 0
+                """
+            }
+        }
+        
+        stage('3. Report Generation') {
+            steps {
+                bat """
+                    ${PYTHON_PATH} generate_vulnerability_report.py
+                """
+                
+                archiveArtifacts artifacts: 'reports/**', allowEmptyArchive: true
+            }
+        }
+        
+        stage('4. Enforce Security Gate') {
+            steps {
+                script {
+                    def report = readFile('reports/bandit_report.json')
+                    
+                    if (report.contains('"issue_severity": "HIGH"') || report.contains('"issue_severity": "CRITICAL"')) {
+                        currentBuild.result = 'FAILURE'
+                        echo "VULNERABILITIES FOUND - marking build as FAILED"
+                    } else {
+                        echo "No HIGH/CRITICAL vulnerabilities found - BUILD PASSES"
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            echo "========== PIPELINE COMPLETE =========="
+        }
+        success {
+            echo "[SUCCESS] Secure build passed - Code is safe for deployment!"
+        }
+        failure {
+            echo "[FAILURE] Build failed due to vulnerabilities (report generated)"
+        }
+    }
+}
+    </script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

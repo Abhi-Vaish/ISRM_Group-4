@@ -87,7 +87,7 @@ def login():
         if not validate_csrf_token(csrf_token):
             database.log_action('SECURITY_VIOLATION', request.remote_addr, 'CSRF validation failed on login')
             flash('Security validation failed. Please try again.', 'danger')
-            return render_template('login_new.html')
+            return render_template('login.html')
         
         username = request.form.get('username', '').strip()  # FIXED: Input trimming
         password = request.form.get('password', '')
@@ -95,13 +95,13 @@ def login():
         # FIXED: Input validation
         if not username or not password:
             flash('Username and password are required', 'danger')
-            return render_template('login_new.html')
+            return render_template('login.html')
         
         # FIXED: Rate limiting enforcement
         if not check_rate_limit(username):
             database.log_action('SECURITY_WARNING', username, 'Rate limit exceeded during login')
             flash('Too many login attempts. Please try again later.', 'danger')
-            return render_template('login_new.html')
+            return render_template('login.html')
         
         record_login_attempt(username)
         
@@ -125,9 +125,9 @@ def login():
             flash('Invalid username or password', 'danger')
             # FIXED: No longer logs password attempts
             database.log_action('LOGIN_FAILED', username, 'Failed login attempt')
-            return render_template('login_new.html')
+            return render_template('login.html')
     
-    return render_template('login_new.html')
+    return render_template('login.html')
 
 @app.route('/dashboard')
 def dashboard():
@@ -139,7 +139,7 @@ def dashboard():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     
-    return render_template('dashboard_new.html')
+    return render_template('dashboard.html')
 
 @app.route('/students')
 def students():
@@ -162,7 +162,7 @@ def students():
     students_list = cursor.fetchall()
     conn.close()
     
-    return render_template('students_new.html', students=students_list)
+    return render_template('students.html', students=students_list)
 
 @app.route('/student/<student_id>')
 def view_student(student_id):
@@ -197,7 +197,7 @@ def view_student(student_id):
         flash('Student not found', 'danger')
         return redirect(url_for('students')), 404
     
-    return render_template('student_view.html', student=student)
+    return render_template('student_detail.html', student=student)
 
 @app.route('/student/profile')
 def student_profile():
@@ -224,7 +224,7 @@ def student_profile():
     if not student:
         return "Your student record not found", 404
     
-    return render_template('student_profile_new.html', student=student)
+    return render_template('student_profile.html', student=student)
 
 @app.route('/student/grades')
 def student_grades():
@@ -250,7 +250,7 @@ def student_grades():
     if not student:
         return "Your student record not found", 404
     
-    return render_template('student_grades_new.html', student=student)
+    return render_template('student_grades.html', student=student)
 
 @app.route('/add_student', methods=['GET', 'POST'])
 def add_student():
@@ -275,7 +275,7 @@ def add_student():
         if not validate_csrf_token(csrf_token):
             database.log_action('SECURITY_VIOLATION', session.get('username'), 'CSRF validation failed on add_student')
             flash('Security validation failed. Please try again.', 'danger')
-            return render_template('add_student_new.html')
+            return render_template('add_student.html')
         
         # FIXED: Input validation for all fields
         roll_no = request.form.get('roll_no', '').strip()
@@ -314,7 +314,7 @@ def add_student():
             flash('Error adding student', 'danger')
             return redirect(url_for('add_student'))
     
-    return render_template('add_student_new.html')
+    return render_template('add_student.html')
 
 @app.route('/search', methods=['GET', 'POST'])
 def search_students():
@@ -339,7 +339,7 @@ def search_students():
         if not validate_csrf_token(csrf_token):
             database.log_action('SECURITY_VIOLATION', session.get('username'), 'CSRF validation failed on search')
             flash('Security validation failed. Please try again.', 'danger')
-            return render_template('search_new.html', results=[])
+            return render_template('search.html', results=[])
         
         search_term = request.form.get('search', '').strip()  # FIXED: Input trimming
         
@@ -352,7 +352,7 @@ def search_students():
             # FIXED: Uses parameterized queries (secure from SQL injection)
             results = database.search_students(search_term)
     
-    return render_template('search_new.html', results=results)
+    return render_template('search.html', results=results)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -439,7 +439,7 @@ def upload_file():
             flash('Error uploading file', 'danger')
             return redirect(url_for('upload_file'))
     
-    return render_template('upload_new.html')
+    return render_template('upload.html')
 
 @app.route('/download/<filename>')
 def download_file(filename):
@@ -525,7 +525,7 @@ def view_logs():
     logs = cursor.fetchall()
     conn.close()
     
-    return render_template('logs_new.html', logs=logs)
+    return render_template('logs.html', logs=logs)
 
 @app.route('/logout', methods=['POST'])
 def logout():
