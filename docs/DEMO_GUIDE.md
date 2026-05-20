@@ -10,8 +10,23 @@
 
 ### Step 1 — Start the Vulnerable App
 
+**⚡ One-Click (Recommended):**
+```bash
+# Windows — just double-click run.bat or type:
+run.bat
+
+# Linux / macOS:
+./run.sh
+```
+> The script auto-creates the virtual environment, installs all dependencies, and starts the app.
+
+**Manual method:**
 ```bash
 git checkout main
+python -m venv venv
+venv\Scripts\activate       # Windows
+source venv/bin/activate     # Linux/macOS
+pip install -r requirements.txt
 python app.py
 ```
 
@@ -53,9 +68,20 @@ Logout → On the Login page enter:
 
 ### Step 4 — Run Bandit SAST Scan
 
-**Open new terminal** (keep app running):
+**⚡ One-Click with scan:**
+```bash
+# Windows:
+run.bat --scan
+
+# Linux / macOS:
+./run.sh --scan
+```
+> This runs Bandit scan first, then starts the app.
+
+**Manual method** (open new terminal, keep app running):
 
 ```bash
+pip install bandit
 bandit -r . -x ./venv -f screen
 ```
 
@@ -104,6 +130,18 @@ Open: `reports/zap_report.html`
 
 Stop the app (Ctrl+C), then:
 
+**⚡ One-Click (Recommended):**
+```bash
+git checkout fixed-version
+
+# Windows:
+run.bat
+
+# Linux / macOS:
+./run.sh
+```
+
+**Manual method:**
 ```bash
 git checkout fixed-version
 pip install -r requirements.txt
@@ -162,6 +200,22 @@ Open: `reports/zap_report_fixed.html`
 
 ---
 
+### Step 11 — Switch Back to Main (for further demo if needed)
+
+```bash
+# Stop the app (Ctrl+C)
+git checkout main
+
+# One-click:
+run.bat           # Windows
+./run.sh           # Linux / macOS
+
+# Or manual:
+python app.py
+```
+
+---
+
 ## KEY COMPARISON TABLE
 
 | Metric | Vulnerable (`main`) | Fixed (`fixed-version`) | Improvement |
@@ -174,6 +228,46 @@ Open: `reports/zap_report_fixed.html`
 | **Debug Mode** | ON (info leak) | OFF (secure) | Config hardened |
 | **CSRF Protection** | None | Added | CSRF tokens added |
 | **Path Traversal** | ✅ Exploitable | ❌ Blocked | Input validation |
+
+---
+
+## Quick Reference — All Commands
+
+### ⚡ One-Click (Easiest)
+```bash
+# Windows — just double-click run.bat or:
+run.bat                    # Setup + start app
+run.bat --scan             # Setup + Bandit scan + start app
+
+# Linux / macOS:
+./run.sh                   # Setup + start app
+./run.sh --scan            # Setup + Bandit scan + start app
+```
+
+### Vulnerable Version (Manual)
+```bash
+git checkout main
+python app.py                              # Start app
+bandit -r . -x ./venv -f screen            # Run Bandit
+python generate_vulnerability_report.py     # Generate CSV
+# Jenkins: http://localhost:8080 → ISRM_Security_Pipeline
+# ZAP report: reports/zap_report.html
+```
+
+### Fixed Version (Manual)
+```bash
+git checkout fixed-version
+python app.py                              # Start app
+bandit -r . -x ./venv -f screen            # Run Bandit
+# Jenkins: http://localhost:8080 → ISRM_Fixed_Pipeline
+# ZAP report: reports/zap_report_fixed.html
+```
+
+### Switch Between Branches
+```bash
+git checkout main              # Switch to vulnerable
+git checkout fixed-version     # Switch to fixed
+```
 
 ---
 
