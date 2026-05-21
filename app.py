@@ -527,15 +527,16 @@ def view_logs():
     
     return render_template('logs.html', logs=logs)
 
-@app.route('/logout', methods=['POST'])
+@app.route('/logout', methods=['GET', 'POST'])
 def logout():
-    """FIXED: CSRF token protection on logout"""
-    # FIXED: CSRF Token Validation
-    csrf_token = request.form.get('csrf_token', '')
-    if not validate_csrf_token(csrf_token):
-        database.log_action('SECURITY_VIOLATION', session.get('username'), 'CSRF validation failed on logout')
-        flash('Security validation failed.', 'danger')
-        return redirect(url_for('dashboard'))
+    """FIXED: CSRF token protection on logout (for POST requests)"""
+    if request.method == 'POST':
+        # FIXED: CSRF Token Validation
+        csrf_token = request.form.get('csrf_token', '')
+        if not validate_csrf_token(csrf_token):
+            database.log_action('SECURITY_VIOLATION', session.get('username'), 'CSRF validation failed on logout')
+            flash('Security validation failed.', 'danger')
+            return redirect(url_for('dashboard'))
     
     username = session.get('username')
     session.clear()
