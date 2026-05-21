@@ -374,7 +374,7 @@ def view_logs():
     
     return render_template('logs.html', logs=logs)
 
-@app.route('/logout')
+@app.route('/logout', methods=['GET', 'POST'])
 def logout():
     """VULNERABILITY: No CSRF token on logout"""
     session.clear()
