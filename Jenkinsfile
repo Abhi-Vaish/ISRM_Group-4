@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        PYTHON_PATH = "C:\\Users\\Snehal\\AppData\\Local\\Programs\\Python\\Python39\\python.exe"
+        PYTHON_PATH = "python"
         REPORT_DIR = 'reports'
     }
     
@@ -17,7 +17,7 @@ pipeline {
                 checkout([
                     $class: 'GitSCM',
                     branches: [[name: '*/main']],
-                    userRemoteConfigs: [[url: 'https://github.com/Snehalgupta-07/ISRM_Proj.git']]
+                    userRemoteConfigs: [[url: 'https://github.com/gauravjaiswal12/ISRM_Group-4.git']]
                 ])
                 bat 'dir'
             }
