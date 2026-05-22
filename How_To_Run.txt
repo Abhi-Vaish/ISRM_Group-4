@@ -11,7 +11,7 @@
     Open ZAP from the Start Menu.
     Click Automated Scan.
     Enter the local target URL on port 5000.
-    Click Attack to begin the vulnerability scan.
+    Click Attack to begin the vulnerability scan. namsa
 5. Generate OWASP ZAP Report
     Click Report in the top navigation bar.
     Select Generate Report.
