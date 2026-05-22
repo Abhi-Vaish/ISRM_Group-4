@@ -17,7 +17,7 @@ pipeline {
                 checkout([
                     $class: 'GitSCM',
                     branches: [[name: '*/main']],
-                    userRemoteConfigs: [[url: 'https://github.com/gauravjaiswal12/ISRM_Group-4.git']]
+                    userRemoteConfigs: [[url: 'https://github.com/Abhi-Vaish/ISRM_Group-4.git']]
                 ])
                 bat 'dir'
             }

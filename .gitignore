@@ -56,3 +56,11 @@ Thumbs.db
 
 # ---- Temporary / One-off Scripts ----
 check_security_gate.py
+
+#-----Jenkins Password----#
+initialAdminPassword.txt
+
+
+#---- report----#
+reports/*
+!reports/*.pdf

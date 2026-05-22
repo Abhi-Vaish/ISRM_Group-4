@@ -136,7 +136,7 @@ java -version
 ### Step 1 — Clone the Repository
 
 ```bash
-git clone https://github.com/gauravjaiswal12/ISRM_Group-4.git
+git clone https://github.com/Abhi-Vaish/ISRM_Group-4.git
 cd ISRM_Group-4
 ```
 
@@ -479,7 +479,7 @@ Jenkins automates the entire security scanning process. The pipeline runs Bandit
    - Scroll to **Pipeline** section
    - Definition: **Pipeline script from SCM**
    - SCM: **Git**
-   - Repository URL: `https://github.com/gauravjaiswal12/ISRM_Group-4.git`
+   - Repository URL: `https://github.com/Abhi-Vaish/ISRM_Group-4.git`
    - Branch Specifier: `*/main` (for vulnerable) or `*/fixed-version` (for fixed)
    - Script Path: `Jenkinsfile`
    - Click **Save**
