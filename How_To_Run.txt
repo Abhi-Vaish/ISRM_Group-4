@@ -1,0 +1,19 @@
+1. Run Vulnerable Code & Scan
+    Switch branch: git checkout main
+    Execute scan: .\run.bat --scan
+2. Run Fixed Code & Scan
+    Switch branch: git checkout fixed-main
+    Execute scan: .\run.bat --scan
+3. Access Jenkins Portal
+    Open the browser and go to the local address on port 8080.
+    Credentials: Use the password located in the initialAdminPassword text file.
+4. Run OWASP ZAP Assessment
+    Open ZAP from the Start Menu.
+    Click Automated Scan.
+    Enter the local target URL on port 5000.
+    Click Attack to begin the vulnerability scan.
+5. Generate OWASP ZAP Report
+    Click Report in the top navigation bar.
+    Select Generate Report.
+    Choose a target directory to save the output.
+    Open the saved HTML file to view results.
