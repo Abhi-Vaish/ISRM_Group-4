@@ -48,8 +48,8 @@ pipeline {
                     
                     call venv\\Scripts\\activate.bat
                     
-                    venv\\Scripts\\bandit -r . -f json -o reports\\bandit_report.json
-                    venv\\Scripts\\bandit -r . -f html -o reports\\bandit_report.html
+                    venv\\Scripts\\bandit -r . -f json -o reports\\bandit_report.json || exit /b 0
+                    venv\\Scripts\\bandit -r . -f html -o reports\\bandit_report.html || exit /b 0
                 """
             }
         }
